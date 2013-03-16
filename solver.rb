@@ -130,5 +130,7 @@ class Solver
 
     start_array[start_location[0]][start_location[1]] = target_value
     start_array[target_location[0]][target_location[1]] = 0
+
+    start_array
   end
 end
