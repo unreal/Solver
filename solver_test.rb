@@ -26,10 +26,21 @@ class SolverTest < Test::Unit::TestCase
 
   test "manhattan distance" do
     assert_equal 12, @solver.manhattan_distance
+    assert_equal 0, Solver.new(Solver::GOAL_ARRAY).manhattan_distance
   end
 
   test "md array" do
-    assert_equal [[2,1,0], [2,1,1], [2,2,1]], @solver.md_array
+    assert_equal [
+      [2, 1, 0],
+      [2, 1, 1],
+      [2, 2, 1]
+    ], @solver.md_array
+
+    assert_equal [
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0]
+    ], Solver.new(Solver::GOAL_ARRAY).md_array
   end
 
   test "number distance" do

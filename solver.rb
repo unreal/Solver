@@ -24,7 +24,16 @@ class Solver
   end
 
   def md_array
-    [[2,1,0], [2,1,1], [2,2,1]]
+    md_array = [[],[],[]]
+
+    start_array.each_index do |row_index|
+      start_array[row_index].each_index do |col_index|
+        md_array[row_index][col_index] =
+          distance(start_array[row_index][col_index])
+      end
+    end
+
+    md_array
   end
 
   def distance(num)
@@ -61,7 +70,8 @@ class Solver
 
   # Locations are given as [row,col] from #location
   def distance_away(start_location, end_location)
-    (start_location[0] - end_location[0]).abs + (start_location[1] - end_location[1]).abs
+    (start_location[0] - end_location[0]).abs +
+      (start_location[1] - end_location[1]).abs
   end
 
   def can_move_left?
@@ -82,10 +92,10 @@ class Solver
 
   def possible_moves
     arr = []
-    arr.push(:left) if can_move_left?
+    arr.push(:left)  if can_move_left?
     arr.push(:right) if can_move_right?
-    arr.push(:down) if can_move_down?
-    arr.push(:up) if can_move_up?
+    arr.push(:down)  if can_move_down?
+    arr.push(:up)    if can_move_up?
     arr.sort
   end
 end
