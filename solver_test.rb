@@ -92,4 +92,48 @@ class SolverTest < Test::Unit::TestCase
     assert_equal [:down, :left, :up], @solver.possible_moves
   end
 
+  test "can move method" do
+    assert @solver.can_move?(:left)
+    assert !@solver.can_move?(:right)
+    assert @solver.can_move?(:up)
+    assert @solver.can_move?(:down)
+  end
+
+  test "target_location method" do
+    assert_equal [0, 1], @solver.target_location([1, 1], :up)
+    assert_equal [2, 1], @solver.target_location([1, 1], :down)
+    assert_equal [1, 0], @solver.target_location([1, 1], :left)
+    assert_equal [1, 2], @solver.target_location([1, 1], :right)
+  end
+
+  test "move method" do
+    @solver.move(:up)
+    assert_equal [
+      [7,5,0],
+      [2,8,3],
+      [1,4,6]
+    ], @solver.start_array
+
+    @solver.move(:left)
+    assert_equal [
+      [7,0,5],
+      [2,8,3],
+      [1,4,6]
+    ], @solver.start_array
+
+    @solver.move(:down)
+    assert_equal [
+      [7,8,5],
+      [2,0,3],
+      [1,4,6]
+    ], @solver.start_array
+
+    @solver.move(:right)
+    assert_equal [
+      [7,8,5],
+      [2,3,0],
+      [1,4,6]
+    ], @solver.start_array
+  end
+
 end

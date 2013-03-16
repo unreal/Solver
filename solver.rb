@@ -100,4 +100,35 @@ class Solver
     arr.push(:up)    if can_move_up?
     arr.sort
   end
+
+  def can_move?(direction)
+    send("can_move_#{direction}?")
+  end
+
+  def target_location(start_location, direction)
+    case direction
+    when :up
+      [start_location[0] - 1, start_location[1]]
+    when :down
+      [start_location[0] + 1, start_location[1]]
+    when :left
+      [start_location[0], start_location[1] - 1]
+    when :right
+      [start_location[0], start_location[1] + 1]
+    else
+      raise "Invalid direction"
+    end
+  end
+
+  def move(direction)
+    raise "Cannot move #{direction}." unless can_move?(direction)
+
+    start_location = location(0, :start)
+    target_location = target_location(start_location, direction)
+
+    target_value = start_array[target_location[0]][target_location[1]]
+
+    start_array[start_location[0]][start_location[1]] = target_value
+    start_array[target_location[0]][target_location[1]] = 0
+  end
 end
