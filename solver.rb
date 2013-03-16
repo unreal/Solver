@@ -14,6 +14,8 @@ class Solver
     @start_array = start_array
   end
 
+  # This is from a discussion thread here:
+  # https://www.allegro.cc/forums/thread/307339
   def manhattan_distance
     sum = 0
     start_array.flatten.each do |v|
