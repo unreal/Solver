@@ -7,14 +7,11 @@ class SolverTest < Test::Unit::TestCase
   def setup
     @solver = Solver.new([7,5,3],[2,8,0], [1,4,6])
   end
-  test "this should fail" do
-    assert_equal 0,0
-  end
 
   test "the solver have a goal array" do
-    assert_equal [1,2,3] , @solver.goalRow1
-    assert_equal [4,5,6] , @solver.goalRow2
-    assert_equal [7,8,0] , @solver.goalRow3
+    assert_equal [1,2,3] , @solver.goal_row1
+    assert_equal [4,5,6] , @solver.goal_row2
+    assert_equal [7,8,0] , @solver.goal_row3
   end
 
   test "sample start" do
@@ -24,40 +21,40 @@ class SolverTest < Test::Unit::TestCase
   end
 
   test "goal array" do
-    assert_equal [[1,2,3], [4,5,6], [7,8,0]], @solver.goalArray
+    assert_equal [[1,2,3], [4,5,6], [7,8,0]], @solver.goal_array
   end
 
   test "sample array" do 
-    assert_equal [[7,5,3], [2,8,0], [1,4,6]], @solver.startArray
+    assert_equal [[7,5,3], [2,8,0], [1,4,6]], @solver.start_array
   end
 
-  test "distice in arrays" do
+  test "manhattan distance" do
     assert_equal 12, @solver.md
   end
 
   test "md array" do
-    assert_equal [[2,1,0], [2,1,1], [2,2,1]], @solver.mdArray
+    assert_equal [[2,1,0], [2,1,1], [2,2,1]], @solver.md_array
   end
 
   test "number distance" do
-    assert_equal 2, @solver.distance(7)
-    assert_equal 0, @solver.distance(3)
-    assert_equal 1, @solver.distance(5)
-    assert_equal 2, @solver.distance(2)
-    assert_equal 1, @solver.distance(8)
     assert_equal 1, @solver.distance(0)
     assert_equal 2, @solver.distance(1)
+    assert_equal 2, @solver.distance(2)
+    assert_equal 0, @solver.distance(3)
     assert_equal 2, @solver.distance(4)
+    assert_equal 1, @solver.distance(5)
     assert_equal 1, @solver.distance(6)
+    assert_equal 2, @solver.distance(7)
+    assert_equal 1, @solver.distance(8)
   end
 
   test "location method" do
-    assert_equal [2,1], @solver.location(4, @solver.startArray)
-    assert_equal [1,0], @solver.location(4, @solver.goalArray)
+    assert_equal [2,1], @solver.location(4, @solver.start_array)
+    assert_equal [1,0], @solver.location(4, @solver.goal_array)
   end
 
   test "distance away" do 
-    assert_equal 2, @solver.distanceAway([2,1], [1,0])
+    assert_equal 2, @solver.distance_away([2,1], [1,0])
   end
 
   test "can move left" do
