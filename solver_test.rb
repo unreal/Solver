@@ -45,11 +45,11 @@ class SolverTest < Test::Unit::TestCase
   end
 
   test "location method" do
-    assert_equal [2,1], @solver.location(4, @solver.start_array)
-    assert_equal [1,0], @solver.location(4, Solver::GOAL_ARRAY)
+    assert_equal [2,1], @solver.location(4, :start)
+    assert_equal [1,0], @solver.location(4, :goal)
   end
 
-  test "distance away" do 
+  test "distance away" do
     assert_equal 2, @solver.distance_away([2,1], [1,0])
   end
 

@@ -28,13 +28,30 @@ class Solver
   end
 
   def distance(num)
-    location_goal = location(num, GOAL_ARRAY)
-    location_start = location(num, start_array)
+    location_goal = location(num, :goal)
+    location_start = location(num, :start)
 
     distance_away(location_goal, location_start)
   end
 
-  def location(num, target_array)
+  # Public: Find where a number is within a target matrix
+  #
+  # num - the number to search for
+  # target - either :start or :goal to specify which array to look in
+  #
+  # Examples
+  #
+  #   location(5, :start)
+  #   # => [1, 0]
+  #
+  # Returns the location in [row, col] format
+  def location(num, target)
+    if target == :start
+      target_array = @start_array
+    else
+      target_array = GOAL_ARRAY
+    end
+
     target_array.each_index do |row_index|
       target_array[row_index].each_index do |col|
         return [row_index, col] if target_array[row_index][col] == num
@@ -48,19 +65,19 @@ class Solver
   end
 
   def can_move_left?
-    location(0, start_array)[1] > 0
+    location(0, :start)[1] > 0
   end
 
   def can_move_right?
-    location(0, start_array)[1] < 2
+    location(0, :start)[1] < 2
   end
 
   def can_move_up?
-    location(0, start_array)[0] > 0
+    location(0, :start)[0] > 0
   end
 
   def can_move_down?
-    location(0, start_array)[0] < 2
+    location(0, :start)[0] < 2
   end
 
   def possible_moves
