@@ -5,18 +5,16 @@ class Solver
   attr_reader :goal_row1, :goal_row2, :goal_row3
   attr_reader :row1, :row2, :row3
 
-  def initialize(row1, row2, row3)
-    @goal_row1 = [1,2,3]
-    @goal_row2 = [4,5,6]
-    @goal_row3 = [7,8,0]
+  GOAL_ARRAY = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 0]
+  ]
 
+  def initialize(row1, row2, row3)
     @row1 = row1
     @row2 = row2
     @row3 = row3
-  end
-
-  def goal_array
-    [@goal_row1, @goal_row2, @goal_row3]
   end
 
   def start_array
@@ -37,7 +35,7 @@ class Solver
   end
 
   def distance(num)
-    location_goal = location(num, goal_array)
+    location_goal = location(num, GOAL_ARRAY)
     location_start = location(num, start_array)
 
     distance_away(location_goal, location_start)

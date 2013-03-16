@@ -8,20 +8,18 @@ class SolverTest < Test::Unit::TestCase
     @solver = Solver.new([7,5,3],[2,8,0], [1,4,6])
   end
 
-  test "the solver have a goal array" do
-    assert_equal [1,2,3] , @solver.goal_row1
-    assert_equal [4,5,6] , @solver.goal_row2
-    assert_equal [7,8,0] , @solver.goal_row3
+  test "the solver has a goal array" do
+    assert_equal [
+      [1, 2, 3],
+      [4, 5, 6],
+      [7, 8, 0]
+    ], Solver::GOAL_ARRAY
   end
 
   test "sample start" do
     assert_equal [7,5,3] , @solver.row1
     assert_equal [2,8,0] , @solver.row2
     assert_equal [1,4,6] , @solver.row3
-  end
-
-  test "goal array" do
-    assert_equal [[1,2,3], [4,5,6], [7,8,0]], @solver.goal_array
   end
 
   test "sample array" do 
@@ -50,7 +48,7 @@ class SolverTest < Test::Unit::TestCase
 
   test "location method" do
     assert_equal [2,1], @solver.location(4, @solver.start_array)
-    assert_equal [1,0], @solver.location(4, @solver.goal_array)
+    assert_equal [1,0], @solver.location(4, Solver::GOAL_ARRAY)
   end
 
   test "distance away" do 
