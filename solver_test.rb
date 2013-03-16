@@ -5,7 +5,7 @@ require './solver'
 class SolverTest < Test::Unit::TestCase
 
   def setup
-    @solver = Solver.new([7,5,3],[2,8,0], [1,4,6])
+    @solver = Solver.new([[7,5,3],[2,8,0], [1,4,6]])
   end
 
   test "the solver has a goal array" do
@@ -16,14 +16,12 @@ class SolverTest < Test::Unit::TestCase
     ], Solver::GOAL_ARRAY
   end
 
-  test "sample start" do
-    assert_equal [7,5,3] , @solver.row1
-    assert_equal [2,8,0] , @solver.row2
-    assert_equal [1,4,6] , @solver.row3
-  end
-
-  test "sample array" do 
-    assert_equal [[7,5,3], [2,8,0], [1,4,6]], @solver.start_array
+  test "start array" do 
+    assert_equal [
+      [7, 5, 3],
+      [2, 8, 0],
+      [1, 4, 6]
+    ], @solver.start_array
   end
 
   test "manhattan distance" do
@@ -57,25 +55,25 @@ class SolverTest < Test::Unit::TestCase
 
   test "can move left" do
     assert @solver.can_move_left?
-    @solver = Solver.new([0,5,3],[2,8,7], [1,4,6])
+    @solver = Solver.new([[0,5,3],[2,8,7], [1,4,6]])
     assert !@solver.can_move_left?
   end
 
   test "can move right" do
     assert !@solver.can_move_right?
-    @solver = Solver.new([0,5,3],[2,8,7], [1,4,6])
+    @solver = Solver.new([[0,5,3],[2,8,7], [1,4,6]])
     assert @solver.can_move_right?
   end
 
   test "can move up" do
     assert @solver.can_move_up?
-    @solver = Solver.new([0,5,3],[2,8,7], [1,4,6])
+    @solver = Solver.new([[0,5,3],[2,8,7], [1,4,6]])
     assert !@solver.can_move_up?
   end
 
   test "can move down" do
     assert @solver.can_move_down?
-    @solver = Solver.new([4,5,3],[2,8,7], [1,0,6])
+    @solver = Solver.new([[4,5,3],[2,8,7], [1,0,6]])
     assert !@solver.can_move_down?
   end
 
