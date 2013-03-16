@@ -16,7 +16,7 @@ class SolverTest < Test::Unit::TestCase
     ], Solver::GOAL_ARRAY
   end
 
-  test "start array" do 
+  test "start array" do
     assert_equal [
       [7, 5, 3],
       [2, 8, 0],
