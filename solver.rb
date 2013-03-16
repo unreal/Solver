@@ -14,7 +14,7 @@ class Solver
     @start_array = start_array
   end
 
-  def md
+  def manhattan_distance
     sum = 0
     start_array.flatten.each do |v|
       sum += distance(v)

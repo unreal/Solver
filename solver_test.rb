@@ -25,7 +25,7 @@ class SolverTest < Test::Unit::TestCase
   end
 
   test "manhattan distance" do
-    assert_equal 12, @solver.md
+    assert_equal 12, @solver.manhattan_distance
   end
 
   test "md array" do
