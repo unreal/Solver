@@ -26,10 +26,10 @@ class SolverTest < Test::Unit::TestCase
 
   test "manhattan distance" do
     assert_equal 12, @solver.manhattan_distance
-    assert_equal 0, Solver.new(Solver::GOAL_ARRAY).manhattan_distance
+    assert_equal 0,  @solver.manhattan_distance(Solver::GOAL_ARRAY)
   end
 
-  test "md array" do
+  test "manhattan distance array" do
     assert_equal [
       [2, 1, 0],
       [2, 1, 1],
@@ -40,24 +40,24 @@ class SolverTest < Test::Unit::TestCase
       [0, 0, 0],
       [0, 0, 0],
       [0, 0, 0]
-    ], Solver.new(Solver::GOAL_ARRAY).md_array
+    ], @solver.md_array(Solver::GOAL_ARRAY)
   end
 
   test "number distance" do
-    assert_equal 1, @solver.distance(0)
-    assert_equal 2, @solver.distance(1)
-    assert_equal 2, @solver.distance(2)
-    assert_equal 0, @solver.distance(3)
-    assert_equal 2, @solver.distance(4)
-    assert_equal 1, @solver.distance(5)
-    assert_equal 1, @solver.distance(6)
-    assert_equal 2, @solver.distance(7)
-    assert_equal 1, @solver.distance(8)
+    assert_equal 1, @solver.distance(0, @solver.start_array)
+    assert_equal 2, @solver.distance(1, @solver.start_array)
+    assert_equal 2, @solver.distance(2, @solver.start_array)
+    assert_equal 0, @solver.distance(3, @solver.start_array)
+    assert_equal 2, @solver.distance(4, @solver.start_array)
+    assert_equal 1, @solver.distance(5, @solver.start_array)
+    assert_equal 1, @solver.distance(6, @solver.start_array)
+    assert_equal 2, @solver.distance(7, @solver.start_array)
+    assert_equal 1, @solver.distance(8, @solver.start_array)
   end
 
   test "location method" do
-    assert_equal [2,1], @solver.location(4, :start)
-    assert_equal [1,0], @solver.location(4, :goal)
+    assert_equal [2,1], @solver.location(4, @solver.start_array)
+    assert_equal [1,0], @solver.location(4, Solver::GOAL_ARRAY)
   end
 
   test "distance away" do
@@ -144,6 +144,13 @@ class SolverTest < Test::Unit::TestCase
     ], @solver.try_move(:up)
 
     assert_nil @solver.try_move(:right)
+  end
+
+  test "try_moves method" do
+    result = @solver.try_moves
+    assert_equal 13, result[:up]
+    assert_equal 12, result[:down]
+    assert_equal 12, result[:left]
   end
 
 end

@@ -16,31 +16,35 @@ class Solver
 
   # This is from a discussion thread here:
   # https://www.allegro.cc/forums/thread/307339
-  def manhattan_distance
+  def manhattan_distance(target=start_array)
     sum = 0
-    start_array.flatten.each do |v|
-      sum += distance(v)
+    target.flatten.each do |v|
+      sum += distance(v, target)
     end
 
     sum
   end
 
-  def md_array
+  # Public: Returns the manhattan distance array for a given array
+  #
+  # target_array - default: start_array
+  #                can figure out the md_array for another
+  def md_array(target=start_array)
     md_array = [[],[],[]]
 
-    start_array.each_index do |row_index|
-      start_array[row_index].each_index do |col_index|
+    target.each_index do |row_index|
+      target[row_index].each_index do |col_index|
         md_array[row_index][col_index] =
-          distance(start_array[row_index][col_index])
+          distance(target[row_index][col_index], target)
       end
     end
 
     md_array
   end
 
-  def distance(num)
-    location_goal = location(num, :goal)
-    location_start = location(num, :start)
+  def distance(num,start_array)
+    location_goal = location(num, Solver::GOAL_ARRAY)
+    location_start = location(num,start_array)
 
     distance_away(location_goal, location_start)
   end
@@ -57,15 +61,9 @@ class Solver
   #
   # Returns the location in [row, col] format
   def location(num, target)
-    if target == :start
-      target_array = @start_array
-    else
-      target_array = GOAL_ARRAY
-    end
-
-    target_array.each_index do |row_index|
-      target_array[row_index].each_index do |col|
-        return [row_index, col] if target_array[row_index][col] == num
+    target.each_index do |row_index|
+      target[row_index].each_index do |col|
+        return [row_index, col] if target[row_index][col] == num
       end
     end
   end
@@ -77,19 +75,19 @@ class Solver
   end
 
   def can_move_left?
-    location(0, :start)[1] > 0
+    location(0, start_array)[1] > 0
   end
 
   def can_move_right?
-    location(0, :start)[1] < 2
+    location(0, start_array)[1] < 2
   end
 
   def can_move_up?
-    location(0, :start)[0] > 0
+    location(0, start_array)[0] > 0
   end
 
   def can_move_down?
-    location(0, :start)[0] < 2
+    location(0, start_array)[0] < 2
   end
 
   def possible_moves
@@ -141,7 +139,7 @@ class Solver
   def try_move(direction)
     return nil unless can_move?(direction)
 
-    start_location = location(0, :start)
+    start_location = location(0, start_array)
     target_location = target_location(start_location, direction)
 
     target_value = start_array[target_location[0]][target_location[1]]
@@ -159,4 +157,30 @@ class Solver
 
     start_array = try_move(direction)
   end
+
+  # Public: tries each possible move direction
+  #
+  # Examples:
+  #
+  #   @solver.try_moves
+  #   # => {
+  #     up:   13,
+  #     down: 12,
+  #     left: 12
+  #   }
+  #
+  # Returns a hash with the manhattan distance corresponding to each direction
+  def try_moves
+    result = {}
+
+    possible_moves.each do |direction|
+      matrix = try_move(direction)
+      md_ary = md_array(matrix)
+      md = manhattan_distance(md_ary)
+      result[direction] = md
+    end
+
+    result
+  end
+
 end
