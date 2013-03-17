@@ -70,7 +70,6 @@ class GameTest < Test::Unit::TestCase
       [2, 8, 3],
       [1, 4, 6]
     ], @game.start_state
-    assert_equal :up, @game.last_move
 
     @game.move(:left)
     assert_equal [
@@ -78,7 +77,6 @@ class GameTest < Test::Unit::TestCase
       [2, 8, 3],
       [1, 4, 6]
     ], @game.start_state
-    assert_equal :left, @game.last_move
 
 
     @game.move(:down)
@@ -87,7 +85,6 @@ class GameTest < Test::Unit::TestCase
       [2,0,3],
       [1,4,6]
     ], @game.start_state
-    assert_equal :down, @game.last_move
 
     @game.move(:right)
     assert_equal [
@@ -95,7 +92,6 @@ class GameTest < Test::Unit::TestCase
       [2,3,0],
       [1,4,6]
     ], @game.start_state
-    assert_equal :right, @game.last_move
   end
 
   test "try_move method" do

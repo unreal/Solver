@@ -73,4 +73,31 @@ class SolverTest < Test::Unit::TestCase
     assert_equal 12, result[:left]
   end
 
+  test "move" do
+    @solver.move(:up)
+    assert_equal [:up], @solver.moves
+    assert_equal :up, @solver.last_move
+    assert_equal [
+      [7, 5, 0],
+      [2, 8, 3],
+      [1, 4, 6]
+    ], @solver.game.current_state
+    assert @solver.previous_states.include?(
+      [
+        [7, 5, 0],
+        [2, 8, 3],
+        [1, 4, 6]
+      ]
+    )
+    assert_equal 2, @solver.previous_states.length
+  end
+
+  test "previous states" do
+    assert_equal [@solver.game.current_state], @solver.previous_states
+  end
+
+  test "moves" do
+    assert_equal [], @solver.moves
+  end
+
 end

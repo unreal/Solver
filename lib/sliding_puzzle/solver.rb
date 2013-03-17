@@ -1,9 +1,8 @@
 module SlidingPuzzle
   class Solver
-
     include CommonMethods
 
-    attr_reader :game
+    attr_reader :game, :moves, :previous_states
 
     GOAL_ARRAY = [
       [1, 2, 3],
@@ -20,6 +19,13 @@ module SlidingPuzzle
 
     def initialize(game)
       @game = game
+
+      @previous_states = [@game.current_state]
+      @moves = []
+    end
+
+    def last_move
+      @moves.last
     end
 
     # This is from a discussion thread here:
@@ -62,7 +68,6 @@ module SlidingPuzzle
         (start_location[1] - end_location[1]).abs
     end
 
-
     # Public: tries each possible move direction
     #
     # Examples:
@@ -88,5 +93,11 @@ module SlidingPuzzle
       result
     end
 
+    def move(direction)
+      raise "Cannot move that direction" unless game.can_move?(direction)
+
+      moves << direction
+      previous_states << game.move(direction)
+    end
   end
 end

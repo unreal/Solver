@@ -3,13 +3,10 @@ module SlidingPuzzle
 
     include CommonMethods
 
-    attr_accessor :last_move
     attr_reader :start_state, :current_state
 
     def initialize(start_state)
       @start_state = @current_state = start_state
-
-      @last_move = nil
     end
 
     def can_move_left?
@@ -93,7 +90,6 @@ module SlidingPuzzle
     def move(direction)
       raise "Cannot move #{direction}." unless can_move?(direction)
 
-      @last_move = direction
       current_state = try_move(direction)
     end
   end
