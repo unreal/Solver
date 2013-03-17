@@ -20,12 +20,26 @@ module SlidingPuzzle
     def initialize(game)
       @game = game
 
-      @previous_states = [@game.current_state]
+      @previous_states = []
+      add_state(@game.current_state)
       @moves = []
+    end
+
+    def add_state(state)
+      new_state = [[],[],[]]
+      new_state[0] = state[0]
+      new_state[1] = state[1]
+      new_state[2] = state[2]
+
+      previous_states << new_state
     end
 
     def last_move
       @moves.last
+    end
+
+    def current_state
+      @previous_states.last
     end
 
     # This is from a discussion thread here:
@@ -68,7 +82,18 @@ module SlidingPuzzle
         (start_location[1] - end_location[1]).abs
     end
 
-    # Public: tries each possible move direction
+    # Public: Returns true if previous states includes the given matrix
+    def been_to?(matrix)
+      previous_states.each do |state|
+        return true if matrix[0] == state[0] &&
+          matrix[1] == state[1] &&
+          matrix[2] == state[2]
+      end
+
+      false
+    end
+
+    # Public: tells which moves will bring about a new result
     #
     # Examples:
     #
@@ -80,11 +105,13 @@ module SlidingPuzzle
     #   }
     #
     # Returns a hash with the manhattan distance corresponding to each direction
-    def try_moves
+    def useful_moves
       result = {}
 
-      @game.possible_moves.each do |direction|
-        matrix = @game.try_move(direction)
+      possible_moves.each do |direction|
+        matrix = game.try_move(direction)
+        next if been_to?(matrix)
+
         md_ary = md_array(matrix)
         md = manhattan_distance(md_ary)
         result[direction] = md
@@ -97,7 +124,40 @@ module SlidingPuzzle
       raise "Cannot move that direction" unless game.can_move?(direction)
 
       moves << direction
-      previous_states << game.move(direction)
+      state = game.move(direction)
+      add_state(state)
+
+      state
+    end
+
+    def possible_moves
+      game.possible_moves
+    end
+
+    def next_direction
+      moves = useful_moves
+      raise Exception.new("No more useful moves") if moves.empty?
+      moves.sort_by {|k,v| v }.first[0]
+    end
+
+    def next_move
+      move(next_direction)
+    end
+
+    def solve(options={})
+      begin
+        while current_state != GOAL_ARRAY
+          move = next_move
+          if options[:debug]
+            puts move.inspect
+            puts manhattan_distance(current_state)
+          end
+        end
+      rescue Exception
+        puts "no more useful moves"
+        puts "current state: #{current_state.inspect}"
+        puts "manhattan distance: #{manhattan_distance(current_state)}"
+      end
     end
   end
 end

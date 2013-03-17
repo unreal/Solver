@@ -66,11 +66,21 @@ class SolverTest < Test::Unit::TestCase
     assert_equal 2, @solver.distance_away([2,1], [1,0])
   end
 
-  test "try_moves method" do
-    result = @solver.try_moves
-    assert_equal 13, result[:up]
+  test "useful_moves method" do
+    result = @solver.useful_moves
+    assert_equal 9, result[:up]
     assert_equal 12, result[:down]
-    assert_equal 12, result[:left]
+    assert_equal 10, result[:left]
+  end
+
+  test "useful_moves moves does not affect current state" do
+    state = @game.current_state
+
+    @solver.useful_moves
+    @solver.useful_moves
+
+    assert_equal state, @game.current_state
+    assert_equal state, @solver.current_state
   end
 
   test "move" do
@@ -100,4 +110,62 @@ class SolverTest < Test::Unit::TestCase
     assert_equal [], @solver.moves
   end
 
+  test "useful_moves does not include a move that would put us into a previous state" do
+    @solver.move(:up)
+
+    assert_equal [:left], @solver.useful_moves.keys
+  end
+
+  test "next_direction" do
+    assert_equal :up, @solver.next_direction
+  end
+
+  test "next direction does not effect state" do
+    state = @solver.current_state
+
+    @solver.next_direction
+
+    assert_equal state, @solver.current_state
+    assert_equal state, @solver.game.current_state
+  end
+
+  test "current_state" do
+    assert_equal @game.current_state, @solver.current_state
+  end
+
+  test "been_to" do
+    matrix = [[],[],[]]
+    matrix[0] = @solver.current_state[0].dup
+    matrix[1] = @solver.current_state[1].dup
+    matrix[2] = @solver.current_state[2].dup
+
+    assert @solver.been_to?(matrix)
+  end
+
+  test "next_move" do
+    assert_equal [
+      [7, 5, 0],
+      [2, 8, 3],
+      [1, 4, 6]
+    ], @solver.next_move
+
+    assert_equal [
+      [7, 0, 5],
+      [2, 8, 3],
+      [1, 4, 6]
+    ], @solver.next_move
+
+    assert_equal [
+      [0, 7, 5],
+      [2, 8, 3],
+      [1, 4, 6]
+    ], @solver.next_move
+  end
+
+  test "solve" do
+    @solver.solve(debug: true)
+    assert_equal Solver::GOAL_ARRAY, @solver.current_state
+  end
+
 end
+

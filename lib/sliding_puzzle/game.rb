@@ -6,7 +6,8 @@ module SlidingPuzzle
     attr_reader :start_state, :current_state
 
     def initialize(start_state)
-      @start_state = @current_state = start_state
+      @start_state = start_state
+      @current_state = start_state.dup
     end
 
     def can_move_left?
@@ -74,12 +75,16 @@ module SlidingPuzzle
     def try_move(direction)
       return nil unless can_move?(direction)
 
-      start_location = location(0, current_state)
+      new_array = [[],[],[]]
+      new_array[0] = current_state[0].dup
+      new_array[1] = current_state[1].dup
+      new_array[2] = current_state[2].dup
+
+      start_location  = location(0, new_array)
       target_location = target_location(start_location, direction)
 
-      target_value = current_state[target_location[0]][target_location[1]]
+      target_value    = new_array[target_location[0]][target_location[1]]
 
-      new_array = current_state
       new_array[start_location[0]][start_location[1]] = target_value
       new_array[target_location[0]][target_location[1]] = 0
 
@@ -88,9 +93,14 @@ module SlidingPuzzle
 
     # Public: Makes the move and changes current_state
     def move(direction)
-      raise "Cannot move #{direction}." unless can_move?(direction)
+      raise Exception.new("Cannot move #{direction}.") unless can_move?(direction)
 
-      current_state = try_move(direction)
+      result = try_move(direction)
+      current_state[0] = result[0]
+      current_state[1] = result[1]
+      current_state[2] = result[2]
+
+      current_state
     end
   end
 end

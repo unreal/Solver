@@ -63,20 +63,30 @@ class GameTest < Test::Unit::TestCase
     assert  @game.can_move?(:down)
   end
 
+  test "move down" do
+    assert_equal [
+      [7, 5, 3],
+      [2, 8, 6],
+      [1, 4, 0]
+    ], @game.move(:down)
+
+    assert_raise(Exception) { @game.move(:down) }
+  end
+
   test "move" do
     @game.move(:up)
     assert_equal [
       [7, 5, 0],
       [2, 8, 3],
       [1, 4, 6]
-    ], @game.start_state
+    ], @game.current_state
 
     @game.move(:left)
     assert_equal [
       [7, 0, 5],
       [2, 8, 3],
       [1, 4, 6]
-    ], @game.start_state
+    ], @game.current_state
 
 
     @game.move(:down)
@@ -84,14 +94,21 @@ class GameTest < Test::Unit::TestCase
       [7,8,5],
       [2,0,3],
       [1,4,6]
-    ], @game.start_state
+    ], @game.current_state
+
+    @game.move(:down)
+    assert_equal [
+      [7,8,5],
+      [2,4,3],
+      [1,0,6]
+    ], @game.current_state
 
     @game.move(:right)
     assert_equal [
       [7,8,5],
-      [2,3,0],
-      [1,4,6]
-    ], @game.start_state
+      [2,4,3],
+      [1,6,0]
+    ], @game.current_state
   end
 
   test "try_move method" do
@@ -102,6 +119,23 @@ class GameTest < Test::Unit::TestCase
     ], @game.try_move(:up)
 
     assert_nil @game.try_move(:right)
+  end
+
+  test "try move does not affect current_state" do
+    state = @game.current_state
+
+    @game.try_move(:up)
+    @game.try_move(:up)
+
+    assert_equal state, @game.current_state
+  end
+
+  test "try move does not affect possible_moves" do
+    assert_equal [:down,:left,:up], @game.possible_moves
+
+    @game.try_move(:up)
+
+    assert_equal [:down,:left,:up], @game.possible_moves
   end
 
 end
