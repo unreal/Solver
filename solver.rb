@@ -120,17 +120,43 @@ class Solver
     end
   end
 
-  def move(direction)
-    raise "Cannot move #{direction}." unless can_move?(direction)
+  # Public: Attempts to move the 0 in some direction from its current position
+  # within the start_array
+  #
+  # direction - can be :up, :down, :left or :right
+  #
+  # Examples:
+  #
+  #   @solver.try_move(:up)
+  #   # => [
+  #     [7, 5, 0],
+  #     [2, 8, 3],
+  #     [1, 4, 6]
+  #   ]
+  #
+  #   @solver.try_move(:right)
+  #   # => nil
+  #
+  # Returns the result of the move if the move is possible or nil if impossible
+  def try_move(direction)
+    return nil unless can_move?(direction)
 
     start_location = location(0, :start)
     target_location = target_location(start_location, direction)
 
     target_value = start_array[target_location[0]][target_location[1]]
 
-    start_array[start_location[0]][start_location[1]] = target_value
-    start_array[target_location[0]][target_location[1]] = 0
+    new_array = start_array
+    new_array[start_location[0]][start_location[1]] = target_value
+    new_array[target_location[0]][target_location[1]] = 0
 
-    start_array
+    new_array
+  end
+
+  # Public: Makes the move and changes start_array
+  def move(direction)
+    raise "Cannot move #{direction}." unless can_move?(direction)
+
+    start_array = try_move(direction)
   end
 end

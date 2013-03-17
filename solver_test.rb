@@ -136,4 +136,14 @@ class SolverTest < Test::Unit::TestCase
     ], @solver.start_array
   end
 
+  test "try_move method" do
+    assert_equal [
+      [7, 5, 0],
+      [2, 8, 3],
+      [1, 4, 6]
+    ], @solver.try_move(:up)
+
+    assert_nil @solver.try_move(:right)
+  end
+
 end
