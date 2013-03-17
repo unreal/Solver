@@ -1,8 +1,7 @@
-require 'rubygems'
-require 'test-unit'
-require './solver'
+require 'test_helper'
 
 class SolverTest < Test::Unit::TestCase
+  include SlidingPuzzle
 
   def setup
     @solver = Solver.new([[7,5,3],[2,8,0], [1,4,6]])
