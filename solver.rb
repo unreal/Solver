@@ -2,6 +2,7 @@ require 'rubygems'
 
 class Solver
 
+  attr_accessor :last_move
   attr_reader :start_array
 
   GOAL_ARRAY = [
@@ -10,8 +11,16 @@ class Solver
     [7, 8, 0]
   ]
 
+  OPPOSITES = {
+    up:    :down,
+    down:  :up,
+    left:  :right,
+    right: :left
+  }
+
   def initialize(start_array)
     @start_array = start_array
+    @last_move = nil
   end
 
   # This is from a discussion thread here:
@@ -155,6 +164,7 @@ class Solver
   def move(direction)
     raise "Cannot move #{direction}." unless can_move?(direction)
 
+    @last_move = direction
     start_array = try_move(direction)
   end
 

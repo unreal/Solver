@@ -113,6 +113,7 @@ class SolverTest < Test::Unit::TestCase
       [2,8,3],
       [1,4,6]
     ], @solver.start_array
+    assert_equal :up, @solver.last_move
 
     @solver.move(:left)
     assert_equal [
@@ -120,6 +121,8 @@ class SolverTest < Test::Unit::TestCase
       [2,8,3],
       [1,4,6]
     ], @solver.start_array
+    assert_equal :left, @solver.last_move
+
 
     @solver.move(:down)
     assert_equal [
@@ -127,6 +130,7 @@ class SolverTest < Test::Unit::TestCase
       [2,0,3],
       [1,4,6]
     ], @solver.start_array
+    assert_equal :down, @solver.last_move
 
     @solver.move(:right)
     assert_equal [
@@ -134,6 +138,7 @@ class SolverTest < Test::Unit::TestCase
       [2,3,0],
       [1,4,6]
     ], @solver.start_array
+    assert_equal :right, @solver.last_move
   end
 
   test "try_move method" do
